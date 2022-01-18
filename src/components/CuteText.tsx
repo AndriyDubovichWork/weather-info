@@ -15,8 +15,8 @@ function CuteText(props: IText) {
       variant={'h1'}
       sx={{
         fontFamily: 'Be Vietnam Pro',
-        color: 'black',
-        textShadow: '0 8px 0 darken(rgb(30, 130, 230), 9)',
+        color: '#123',
+        textShadow: '0 1px 0 rgb(30, 130, 230)',
         fontSize: `${props.FSZ}`,
         fontWeigth: '500',
       }}

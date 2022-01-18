@@ -4,18 +4,29 @@ import { connect } from 'react-redux';
 
 import { Box, Typography } from '@mui/material';
 
-import CloudIcon from '@mui/icons-material/Cloud';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import { CardMedia } from '@mui/material';
 
-import { api } from './../api/api';
 import BottomData from './BottomData';
-import TopData from './TopData';
+import CellingData from './CellingData';
 
-function WeatherMainCard() {
+import { GetWeather, GetWeatherByIP } from './../Redux/MainReducer';
+
+import Preloader from './preloader/preloader';
+
+interface IWeatherMainCard {
+  state: { IP: string; Weather: any };
+  GetWeatherByIP: Function;
+  GetWeather: Function;
+}
+
+function WeatherMainCard(props: IWeatherMainCard) {
   useEffect(() => {
-    // const IP = api.GetIP();
-    // console.log(api.GetWeather(IP));
+    props.GetWeatherByIP();
   }, []);
+  // useEffect(() => {
+  //   const Weather = props.state.Weather;
+  // });
+
   return (
     <Box
       sx={{
@@ -25,29 +36,38 @@ function WeatherMainCard() {
         transform: 'translate(-50%,-50%)',
       }}
     >
-      <Box
-        sx={{
-          fontFamily: 'Be Vietnam Pro',
-          position: 'relative',
-          display: 'inline-block',
-          width: '300px',
-          height: '500px',
-          verticalAlign: 'middle',
-          textAlign: 'center',
-          backgroundColor: '#47BFDF',
-          borderRadius: 3,
-        }}
-      >
-        <TopData />
+      {!props.state.Weather.condition ? (
+        <Preloader />
+      ) : (
+        <Box
+          sx={{
+            fontFamily: 'Be Vietnam Pro',
+            position: 'relative',
+            display: 'inline-block',
+            width: '300px',
+            height: '500px',
+            verticalAlign: 'middle',
+            textAlign: 'center',
+            backgroundColor: '#47BFDF',
+            borderRadius: 3,
+            color: '#123',
+          }}
+        >
+          <CellingData place={props.state.Weather.Place} />
 
-        <CloudIcon sx={{ fontSize: '200px' }} />
-        <BottomData />
-      </Box>
+          <Box
+            component='img'
+            src={'https:' + props.state.Weather.condition.icon}
+            sx={{ height: '150px', width: '150px', mt: 5 }}
+          />
+          <BottomData Weather={props.state.Weather} />
+        </Box>
+      )}
     </Box>
   );
 }
 interface Istate {
-  main: { IP: string; Weather: object };
+  main: any;
 }
 
 const MapStateToProps = (state: Istate) => {
@@ -55,9 +75,7 @@ const MapStateToProps = (state: Istate) => {
     state: state.main,
   };
 };
-const MapDispatchToProps = (dispatch: Function) => {
-  return {};
-};
-export default compose(connect(MapStateToProps, MapDispatchToProps))(
-  WeatherMainCard
-);
+
+export default compose(
+  connect(MapStateToProps, { GetWeather, GetWeatherByIP })
+)(WeatherMainCard);

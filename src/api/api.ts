@@ -1,17 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 
-interface GetWeatherProps {
-  IP: string;
-}
-
 export const api = {
   GetIP: () => {
-    return axios
-      .get('https://geolocation-db.com/json/')
-      .then((response) => console.log(response));
+    return axios.get('https://geolocation-db.com/json/').then((response) => {
+      return response.data.IPv4;
+    });
   },
-  GetWeather: async (IP: GetWeatherProps) => {
+  GetWeather: async (IP: string) => {
     return await axios
       .request({
         method: 'GET',
@@ -23,6 +19,8 @@ export const api = {
             '933c98fa7amshe2840a4a213dfadp15a53ajsn8629f35eaef5',
         },
       })
-      .then((response) => response);
+      .then((response) => {
+        return response.data;
+      });
   },
 };
