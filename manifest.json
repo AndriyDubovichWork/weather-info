@@ -1,0 +1,10 @@
+{
+  "name": "weather-api",
+  "short_name": "WAPI",
+  "theme_color": "#ff095a",
+  "background_color": "#feaaee",
+  "display": "standalone",
+  "start_url": "/",
+
+  "splash_pages": null
+}
